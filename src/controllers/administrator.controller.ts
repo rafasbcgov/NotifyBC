@@ -1,17 +1,3 @@
-// Copyright 2016-present Province of British Columbia
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//     http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
 import {authenticate} from '@loopback/authentication';
 import {ApplicationConfig, CoreBindings, inject, service} from '@loopback/core';
 import {
@@ -108,7 +94,7 @@ export const CredentialsRequestBody = {
 };
 
 @oas.tags('administrator')
-@authenticate('ipWhitelist', 'clientCertificate', 'accessToken')
+@authenticate('ipWhitelist', 'accessToken')
 export class AdministratorController extends BaseController {
   constructor(
     @inject('repositories.AdministratorRepository', {
@@ -139,7 +125,7 @@ export class AdministratorController extends BaseController {
     super(appConfig, configurationRepository);
   }
 
-  @authenticate('ipWhitelist', 'clientCertificate')
+  @authenticate('ipWhitelist')
   @post('/administrators', {
     responses: {
       '200': {
@@ -213,14 +199,7 @@ export class AdministratorController extends BaseController {
     return {token};
   }
 
-  @authenticate(
-    'ipWhitelist',
-    'clientCertificate',
-    'accessToken',
-    'oidc',
-    'siteMinder',
-    'anonymous',
-  )
+  @authenticate('ipWhitelist', 'accessToken', 'anonymous')
   @get('/administrators/whoami', {
     responses: {
       '200': {

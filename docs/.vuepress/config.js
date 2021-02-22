@@ -66,7 +66,7 @@ module.exports = {
             'getting-started/overview',
             'getting-started/quickstart',
             'getting-started/installation',
-            'getting-started/web-console',
+            'getting-started/usage',
             "getting-started/what's-new",
           ],
         },
@@ -92,8 +92,6 @@ module.exports = {
             'config/notificationBounce',
             'config/workerProcessCount',
             'config/middleware',
-            'config/oidc',
-            'config/certificates',
           ],
         },
         {
@@ -118,11 +116,7 @@ module.exports = {
             'miscellaneous/migration',
           ],
         },
-        {
-          title: 'Meta',
-          collapsable: false,
-          children: ['meta/conduct', 'meta/acknowledgments'],
-        },
+        {title: 'Meta', collapsable: false, children: ['meta/conduct']},
       ],
     },
     algolia: {

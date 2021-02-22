@@ -2,15 +2,12 @@ const NotifyBcApplication = require('../dist/application').NotifyBcApplication;
 const webpack = require('webpack');
 const app = new NotifyBcApplication();
 
-const proxyProto = app.options.tls.enabled ? 'https' : 'http';
 module.exports = {
   transpileDependencies: ['vuetify'],
   pages: {
     index: {
       entry: 'src/main.js',
       apiUrlPrefix: app.options.restApiRoot,
-      oidcAuthority: app.options.oidc && app.options.oidc.discoveryUrl,
-      oidcClientId: app.options.oidc && app.options.oidc.clientId,
     },
   },
   configureWebpack: {
@@ -26,10 +23,7 @@ module.exports = {
     port: 8000,
     proxy: {
       '^/api/': {
-        target: proxyProto + '://localhost:3000',
-      },
-      '^/oauth2-redirect.html': {
-        target: proxyProto + '://localhost:3000',
+        target: 'http://localhost:3000',
       },
     },
   },

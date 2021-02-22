@@ -4,22 +4,6 @@ permalink: /docs/developer-notes/
 
 # Developer Notes
 
-## Setup development environment
-
-Install Visual Studio Code and following extensions:
-
-- Prettier
-- ESLint
-- Vetur
-- Code Spell Checker
-- Debugger for Chrome
-
-Multiple run configs have been created to facilitate debugging server, client, test and docs.
-
-::: warning Client certificate authentication doesn't work in client debugger
-Because Vue cli webpack dev server cannot proxy passthrough HTTPS connections, client certificate authentication doesn't work in client debugger. If testing client certificate authentication in web console is needed, run `yarn build` to generate prod client distribution and launch server debugger on https://localhost:3000
-:::
-
 ## Automated Testing
 
 Test framework is created by LoopBack lb4 CLI, using LoopBack provided tool set and following LoopBack [best practices](https://loopback.io/doc/en/lb4/Testing-your-application.html). To launch test, run `yarn test`. A _Test_ launch config is provided to debug in VS Code.
@@ -39,20 +23,3 @@ Whenever possible, a test spec should be written to
 ## Code Coverage
 
 After running `yarn test`, nyc code coverage report is generated in git ignored folder _/coverage_.
-
-## Install Docs Website
-
-If you want to contribute to _NotifyBC_ docs beyond simple fix ups, run
-
-```sh
-yarn --cwd docs install
-yarn --cwd docs dev
-```
-
-If everything goes well, the last line of the output will be
-
-```
-> VuePress dev server listening at http://localhost:8080/NotifyBC/
-```
-
-You can now browse to the local docs site [http://localhost:8080/NotifyBC](http://localhost:8080/NotifyBC/)

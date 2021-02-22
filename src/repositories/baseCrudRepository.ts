@@ -1,21 +1,6 @@
-// Copyright 2016-present Province of British Columbia
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//     http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
 import {ApplicationConfig, CoreBindings, Getter, inject} from '@loopback/core';
 import {DefaultCrudRepository, Entity, juggler} from '@loopback/repository';
 import {MiddlewareBindings, MiddlewareContext} from '@loopback/rest';
-import {SecurityBindings, securityId, UserProfile} from '@loopback/security';
 const ipRangeCheck = require('ip-range-check');
 
 export class BaseCrudRepository<
@@ -32,8 +17,6 @@ export class BaseCrudRepository<
     protected getHttpContext: Getter<MiddlewareContext>,
     @inject(CoreBindings.APPLICATION_CONFIG)
     protected appConfig: ApplicationConfig,
-    @inject(SecurityBindings.USER, {optional: true})
-    public user?: UserProfile,
   ) {
     super(entityClass, dataSource);
   }
@@ -68,18 +51,6 @@ export class BaseCrudRepository<
           return true;
         }
       } catch (ex) {}
-      if (
-        this.user &&
-        this.user.authnStrategy === 'oidc' &&
-        this.appConfig.oidc?.isAdmin &&
-        this.appConfig.oidc.isAdmin instanceof Function
-      ) {
-        return this.appConfig.oidc.isAdmin(this.user);
-      }
-    }
-
-    if (this.user && this.user.authnStrategy === 'clientCertificate') {
-      return true;
     }
 
     const adminIps = this.appConfig.adminIps || this.appConfig.defaultAdminIps;
@@ -91,19 +62,7 @@ export class BaseCrudRepository<
     return false;
   }
 
-  async getCurrentUser(httpCtx: any, siteMinderOnly = false) {
-    if (this.user && this.user.authnStrategy === 'oidc' && !siteMinderOnly) {
-      if (this.appConfig.oidc.isAuthorizedUser) {
-        if (
-          this.appConfig.oidc.isAuthorizedUser instanceof Function &&
-          (await this.appConfig.oidc.isAuthorizedUser(this.user))
-        ) {
-          return this.user[securityId];
-        }
-      } else {
-        return this.user[securityId];
-      }
-    }
+  async getCurrentUser(httpCtx: any) {
     // internal requests
     if (!httpCtx) return null;
     const request = httpCtx.req || httpCtx.request;
