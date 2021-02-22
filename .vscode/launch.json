@@ -21,7 +21,7 @@
     {
       "type": "node",
       "request": "launch",
-      "name": "App",
+      "name": "Server",
       "program": "${workspaceFolder}\\dist\\index.js",
       "autoAttachChildProcesses": true,
       "console": "internalConsole",
@@ -29,7 +29,8 @@
       "preLaunchTask": "Compile Project",
       "env": {
         "NODE_ENV": "dev",
-        "NOTIFYBC_WORKER_PROCESS_COUNT": "1"
+        "NOTIFYBC_WORKER_PROCESS_COUNT": "1",
+        "NODE_TLS_REJECT_UNAUTHORIZED": "0"
       }
     },
     {
@@ -63,12 +64,12 @@
   ],
   "compounds": [
     {
-      "name": "App&Docs",
-      "configurations": ["App", "Docs", "Launch Docs"]
+      "name": "Server&Docs",
+      "configurations": ["Server", "Docs", "Launch Docs"]
     },
     {
-      "name": "App&Client",
-      "configurations": ["App", "Client", "Launch Client"]
+      "name": "Server&Client",
+      "configurations": ["Server", "Client", "Launch Client"]
     }
   ]
 }
