@@ -36,7 +36,7 @@ export class BaseController {
     protected appConfig: ApplicationConfig,
     @repository(ConfigurationRepository)
     public configurationRepository: ConfigurationRepository,
-  ) {}
+  ) { }
 
   smsClient: any;
   async sendSMS(to: string, textBody: string, data: any, cb?: Function) {
@@ -45,9 +45,8 @@ export class BaseController {
     switch (smsServiceProvider) {
       case 'swift':
         try {
-          const url = `${smsConfig['apiUrlPrefix']}${
-            smsConfig['accountKey']
-          }/${encodeURIComponent(to)}`;
+          const url = `${smsConfig['apiUrlPrefix']}${smsConfig['accountKey']
+            }/${encodeURIComponent(to)}`;
           const body: SMSBody = {
             MessageBody: textBody,
           };
@@ -106,7 +105,7 @@ export class BaseController {
           if (!error && info.accepted.length < 1) {
             error = new Error('delivery failed');
           }
-        } catch (ex) {}
+        } catch (ex) { }
         if (cb) {
           return cb(error, info);
         } else {
@@ -127,10 +126,10 @@ export class BaseController {
         /\{subscription_confirmation_code\}/gi,
         data.confirmationRequest.confirmationCode,
       );
-    } catch (ex) {}
+    } catch (ex) { }
     try {
       output = output.replace(/\{service_name\}/gi, data.serviceName);
-    } catch (ex) {}
+    } catch (ex) { }
     try {
       if (output.match(/\{unsubscription_service_names\}/i)) {
         const serviceNames = _.union(
@@ -142,11 +141,11 @@ export class BaseController {
         output = output.replace(
           /\{unsubscription_service_names\}/gi,
           pluralize('service', serviceNames.length) +
-            ' ' +
-            toSentence(serviceNames),
+          ' ' +
+          toSentence(serviceNames),
         );
       }
-    } catch (ex) {}
+    } catch (ex) { }
     let httpHost;
     try {
       const req = httpCtx.req || httpCtx.request;
@@ -159,7 +158,7 @@ export class BaseController {
       let args: any;
       try {
         args = httpCtx.getSync('args');
-      } catch (ex) {}
+      } catch (ex) { }
       if (args?.data?.httpHost) {
         httpHost = args.data.httpHost;
       } else if (httpCtx.instance?.httpHost) {
@@ -168,67 +167,79 @@ export class BaseController {
         httpHost = data.httpHost;
       }
       output = output.replace(/\{http_host\}/gi, httpHost);
-    } catch (ex) {}
+    } catch (ex) { }
     try {
       output = output.replace(
         /\{rest_api_root\}/gi,
         this.appConfig.restApiRoot,
       );
-    } catch (ex) {}
+    } catch (ex) { }
     try {
       output = output.replace(/\{subscription_id\}/gi, data.id);
-    } catch (ex) {}
+    } catch (ex) { }
     try {
       output = output.replace(
         /\{unsubscription_code\}/gi,
         data.unsubscriptionCode,
       );
-    } catch (ex) {}
+    } catch (ex) { }
     try {
       output = output.replace(
         /\{unsubscription_url\}/gi,
         httpHost +
-          this.appConfig.restApiRoot +
-          '/subscriptions/' +
-          data.id +
-          '/unsubscribe?unsubscriptionCode=' +
-          data.unsubscriptionCode,
+        this.appConfig.restApiRoot +
+        '/subscriptions/' +
+        data.id +
+        '/unsubscribe?unsubscriptionCode=' +
+        data.unsubscriptionCode,
       );
-    } catch (ex) {}
+    } catch (ex) { }
+    try {
+      output = output.replace(/\{firstname\}/gi, data.firstname)
+    } catch (ex) { }
+    try {
+      output = output.replace(/\{lastname\}/gi, data.lastname)
+    } catch (ex) { }
+    try {
+      output = output.replace(/\{campaign\}/gi, data.campaign)
+    } catch (ex) { }
+    try {
+      output = output.replace(/\{survey_url\}/gi, data.survey_url)
+    } catch (ex) { }
     try {
       output = output.replace(
         /\{unsubscription_all_url\}/gi,
         httpHost +
-          this.appConfig.restApiRoot +
-          '/subscriptions/' +
-          data.id +
-          '/unsubscribe?unsubscriptionCode=' +
-          data.unsubscriptionCode +
-          '&additionalServices=_all',
+        this.appConfig.restApiRoot +
+        '/subscriptions/' +
+        data.id +
+        '/unsubscribe?unsubscriptionCode=' +
+        data.unsubscriptionCode +
+        '&additionalServices=_all',
       );
-    } catch (ex) {}
+    } catch (ex) { }
     try {
       output = output.replace(
         /\{subscription_confirmation_url\}/gi,
         httpHost +
-          this.appConfig.restApiRoot +
-          '/subscriptions/' +
-          data.id +
-          '/verify?confirmationCode=' +
-          data.confirmationRequest.confirmationCode,
+        this.appConfig.restApiRoot +
+        '/subscriptions/' +
+        data.id +
+        '/verify?confirmationCode=' +
+        data.confirmationRequest.confirmationCode,
       );
-    } catch (ex) {}
+    } catch (ex) { }
     try {
       output = output.replace(
         /\{unsubscription_reversion_url\}/gi,
         httpHost +
-          this.appConfig.restApiRoot +
-          '/subscriptions/' +
-          data.id +
-          '/unsubscribe/undo?unsubscriptionCode=' +
-          data.unsubscriptionCode,
+        this.appConfig.restApiRoot +
+        '/subscriptions/' +
+        data.id +
+        '/unsubscribe/undo?unsubscriptionCode=' +
+        data.unsubscriptionCode,
       );
-    } catch (ex) {}
+    } catch (ex) { }
 
     // for backward compatibilities
     try {
@@ -236,22 +247,22 @@ export class BaseController {
         /\{confirmation_code\}/gi,
         data.confirmationRequest.confirmationCode,
       );
-    } catch (ex) {}
+    } catch (ex) { }
     try {
       output = output.replace(/\{serviceName\}/gi, data.serviceName);
-    } catch (ex) {}
+    } catch (ex) { }
     try {
       output = output.replace(/\{restApiRoot\}/gi, this.appConfig.restApiRoot);
-    } catch (ex) {}
+    } catch (ex) { }
     try {
       output = output.replace(/\{subscriptionId\}/gi, data.id);
-    } catch (ex) {}
+    } catch (ex) { }
     try {
       output = output.replace(
         /\{unsubscriptionCode\}/gi,
         data.unsubscriptionCode,
       );
-    } catch (ex) {}
+    } catch (ex) { }
     try {
       if (data.data) {
         // substitute all other tokens with matching data.data properties
@@ -264,11 +275,11 @@ export class BaseController {
               if (val) {
                 output = output.replace(e, val);
               }
-            } catch (ex) {}
+            } catch (ex) { }
           });
         }
       }
-    } catch (ex) {}
+    } catch (ex) { }
     return output;
   }
 
@@ -295,10 +306,10 @@ export class BaseController {
     let res;
     try {
       res = _.merge({}, this.appConfig[configName]);
-    } catch (ex) {}
+    } catch (ex) { }
     try {
       res = _.merge({}, res, (data as Configuration).value);
-    } catch (ex) {}
+    } catch (ex) { }
     next?.(null, res);
     return res;
   }
