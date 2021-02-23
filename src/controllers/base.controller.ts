@@ -233,6 +233,18 @@ export class BaseController {
       output = output.replace(/\{subscriptionId\}/gi, data.id);
     } catch (ex) {}
     try {
+      output = output.replace(/\{firstname\}/gi, data.firstname);
+    } catch (ex) {}
+    try {
+      output = output.replace(/\{lastname\}/gi, data.lastname);
+    } catch (ex) {}
+    try {
+      output = output.replace(/\{campaign\}/gi, data.campaign);
+    } catch (ex) {}
+    try {
+      output = output.replace(/\{survey_url\}/gi, data.survey_url);
+    } catch (ex) {}
+    try {
       output = output.replace(
         /\{unsubscriptionCode\}/gi,
         data.unsubscriptionCode,
